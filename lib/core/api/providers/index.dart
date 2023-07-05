@@ -6,6 +6,7 @@ import 'package:taxipark_driver/core/api/providers/map_procider.dart';
 import 'package:taxipark_driver/core/api/providers/modal_provider.dart';
 
 import 'finder_provider.dart';
+import 'order_provider.dart';
 // import 'package:taxipark_driver/core/api/providers/picked_point_provider.dart';
 
 class AppProviders {
@@ -23,6 +24,7 @@ class AppProviders {
     //     create: (_) => PickedPointProvider()),
     ChangeNotifierProvider<FinderProvider>(create: (_) => FinderProvider()),
     ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-    ChangeNotifierProvider<MapProvider>(create: (_) => MapProvider())
+    ChangeNotifierProvider<MapProvider>(create: (_) => MapProvider()),
+    ChangeNotifierProvider<OrderProvider>(create: (_) => OrderProvider()),
   ];
 }

@@ -22,7 +22,7 @@ class AuthProvider extends ChangeNotifier {
     _username = cache.getStringValue(PreferenceKeys.USER_FULLNAME);
     _password = cache.getStringValue(PreferenceKeys.USER_PASS);
     _phoneNumber = cache.getStringValue(PreferenceKeys.USER_PHONE);
-    if (_username.isEmpty || _password.isEmpty) return onError?.call();
+    if (_phoneNumber.isEmpty || _password.isEmpty) return onError?.call();
     if (_phoneNumber.isNotEmpty && _password.isNotEmpty) {
       return login(
           phoneNumber: _phoneNumber,
@@ -30,7 +30,7 @@ class AuthProvider extends ChangeNotifier {
           onError: onError,
           onLogin: () {
             onSuccess?.call();
-            updateFCM();
+            updateFCM.call();
           });
     }
     // });

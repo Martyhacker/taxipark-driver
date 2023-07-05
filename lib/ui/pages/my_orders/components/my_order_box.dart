@@ -1,12 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxipark_driver/core/api/models/order_model.dart';
 import 'package:taxipark_driver/core/constants/constants.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/generated/locale_keys.g.dart';
 
 class MyOrderBox extends StatelessWidget {
+  final OrderModel model;
   const MyOrderBox({
     super.key,
+    required this.model,
   });
 
   @override
@@ -31,12 +34,13 @@ class MyOrderBox extends StatelessWidget {
                       controlsBuilder: (context, details) {
                         return const SizedBox();
                       },
-                      steps: const [
+                      steps: [
                         Step(
-                            label: Text("11:30"),
-                            title: Text("Oguzkent oteli"),
-                            content: SizedBox()),
-                        Step(title: Text("Gagarin 12/A"), content: SizedBox()),
+                            title: Text(model.start ?? ""),
+                            content: const SizedBox()),
+                        Step(
+                            title: Text(model.destination ?? ""),
+                            content: const SizedBox()),
                       ])),
               Container(
                   padding: const EdgeInsets.all(15),
