@@ -1,0 +1,59 @@
+{
+    "drawer": {
+        "myAccount": "Мой профайл",
+        "orderHistory": "История заказов",
+        "rateCompany": "Оценивать",
+        "changeLanguage": "Язык"
+    },
+    "home": {
+        "viewOrders": "Просмотр заказа",
+        "finishedOrders": "Выполненные заказы",
+        "cancelledOrders": "Отмененные заказы",
+        "orders": "Заказы",
+        "free": "Свободный",
+        "nonFree": "Не свободный"
+    },
+    "orderBox":{
+        "cancel":"Отменить",
+        "view":"Смотреть"
+    },
+    "orderDetail": {
+        "incomingOrder": "Поступивший заказ",
+        "startCounter": "Включить счетчик",
+        "from": "от",
+        "to": "до",
+        "phone": "Номер клиента",
+        "orderFinished": "Заказ выполнен"
+    },
+    "services": {
+        "services": "Сервис",
+        "courier": "Курьер",
+        "taxi": "Такси",
+        "soberDriver": "Трезвый водитель"
+    },
+    "warnings": {
+        "loginError":"Введите учетные данные правильно!",
+        "errorOccured": "Произошла ошибка!",
+        "successfull": "Задача успешно!",
+        "noInternet": "Нет подключения к Интернету, попробуйте еще раз.",
+        "noConnection": "Без интернета",
+        "pageNotFound": "Страница не найдена!"
+    },
+    "authorization": {
+        "login": "Войти",
+        "phone": "Номер телефона",
+        "username": "Имя пользователя",
+        "password": "Пароль"
+    },
+    "profile": {
+        "logout": "Выйти"
+    },
+    "validator": {
+        "empty": "Не может быть пустым!",
+        "length": "Входить полностью!"
+    },
+    "buttons": {
+        "retry": "Попробовать",
+        "cancel": "Отмена"
+    }
+}
