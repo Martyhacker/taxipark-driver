@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_star/custom_rating.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,7 +6,6 @@ import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/style/icon_assets.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/core/style/shadows.dart';
-import 'package:taxipark_driver/generated/locale_keys.g.dart';
 import 'package:taxipark_driver/ui/widgets/main_button.dart';
 
 class HomePage extends StatelessWidget {
@@ -40,14 +38,14 @@ class HomePage extends StatelessWidget {
                           onTap: () {
                             Navigator.pushNamed(context, Routes.orderDetail);
                           },
-                          title: LocaleKeys.home_viewOrders.tr(),
+                          title: 'Просмотр заказа',
                           badgeCount: 2)),
                   Expanded(
                       child: HomeButton(
                           onTap: () {
                             Navigator.pushNamed(context, Routes.myOrders);
                           },
-                          title: LocaleKeys.home_finishedOrders.tr(),
+                          title: 'Выполненные заказы',
                           badgeCount: 2)),
                 ],
               ),
@@ -59,11 +57,9 @@ class HomePage extends StatelessWidget {
                   Expanded(
                       child: HomeButton(
                           onTap: () {},
-                          title: LocaleKeys.home_cancelledOrders.tr(),
+                          title: 'Отмененные заказы',
                           badgeCount: 2)),
-                  Expanded(
-                      child: HomeButton(
-                          onTap: () {}, title: LocaleKeys.home_orders.tr())),
+                  Expanded(child: HomeButton(onTap: () {}, title: 'Заказы')),
                 ],
               ),
             ),
@@ -72,7 +68,7 @@ class HomePage extends StatelessWidget {
               children: [
                 MainButton(
                   onTap: () {},
-                  text: LocaleKeys.home_free.tr(),
+                  text: 'Свободный|Не свободный',
                   padding: const EdgeInsets.all(15),
                 ),
               ],

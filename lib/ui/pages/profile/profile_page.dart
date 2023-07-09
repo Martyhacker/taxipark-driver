@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +8,6 @@ import 'package:taxipark_driver/core/style/icon_assets.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/core/style/shadows.dart';
 import 'package:taxipark_driver/core/utils/form_field_validator.dart';
-import 'package:taxipark_driver/generated/locale_keys.g.dart';
 
 import '../../widgets/default_appbar.dart';
 
@@ -55,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
               _onLogout.call();
             },
             icon: const Icon(Icons.logout, color: Colors.black))
-      ], title: LocaleKeys.drawer_myAccount.tr()),
+      ], title: 'Мой профайл'),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -76,10 +74,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              LocaleKeys.authorization_username.tr(),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                            const Text(
+                              'Имя пользователя',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             TextFormField(
                               controller: _tecUsername,
@@ -94,10 +91,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                       borderRadius: BorderRadius.circular(10))),
                             ),
                             const SizedBox(height: 40),
-                            Text(
-                              LocaleKeys.authorization_phone.tr(),
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                            const Text(
+                              'Номер телефона',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             TextFormField(
                               controller: _tecPhone,

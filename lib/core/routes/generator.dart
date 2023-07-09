@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxipark_driver/core/routes/transitions/slide_route.dart';
 import 'package:taxipark_driver/ui/pages/index.dart';
 import 'package:taxipark_driver/ui/pages/order_detail/order_detail_page.dart';
 
-import '../../generated/locale_keys.g.dart';
 import 'routes.dart';
 
 class RouteGenerator {
@@ -45,10 +43,10 @@ class ErrorRoute extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Center(
+      body: const Center(
         child: SingleChildScrollView(
             child: Text(
-          LocaleKeys.warnings_pageNotFound.tr(),
+          'Страница не найдена!',
         )),
       ),
     );

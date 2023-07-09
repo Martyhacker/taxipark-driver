@@ -1,11 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:taxipark_driver/core/api/providers/auth_provider.dart';
 import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/utils/form_field_validator.dart';
-import 'package:taxipark_driver/generated/locale_keys.g.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/style/palette.dart';
@@ -53,8 +51,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(LocaleKeys.authorization_login.tr(),
-                  style: Theme.of(context).textTheme.headlineLarge),
+              Text('Войти', style: Theme.of(context).textTheme.headlineLarge),
               const SizedBox(height: 40),
               Container(
                 width: double.infinity,
@@ -68,9 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          LocaleKeys.authorization_phone.tr(),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        const Text(
+                          'Номер телефона',
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextFormField(
                           controller: _tecPhone,
@@ -92,9 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                                   borderRadius: BorderRadius.circular(10))),
                         ),
                         const SizedBox(height: 30),
-                        Text(LocaleKeys.authorization_password.tr(),
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                        const Text('Пароль',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         TextFormField(
                           controller: _tecPassword,
                           validator: CustomFormFieldValidator().isNotEmpty,
@@ -123,9 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                       color: Palette.yellow,
                       borderRadius: kDefaultBorderRadius,
                       boxShadow: Shadows.defaultShadow),
-                  child: Text(
-                    LocaleKeys.authorization_login.tr(),
-                    style: const TextStyle(color: Palette.white),
+                  child: const Text(
+                    'Войти',
+                    style: TextStyle(color: Palette.white),
                   ),
                 ),
               ),

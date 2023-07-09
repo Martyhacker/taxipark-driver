@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:taxipark_driver/core/constants/constants.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/core/style/shadows.dart';
-import 'package:taxipark_driver/generated/locale_keys.g.dart';
 import 'package:taxipark_driver/ui/pages/order_detail/components/order_detail_appbar.dart';
 import 'package:taxipark_driver/ui/widgets/main_button.dart';
 
@@ -41,7 +39,7 @@ class OrderDetailPage extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        LocaleKeys.orderDetail_incomingOrder.tr(),
+                        'Поступивший заказ',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Container(
@@ -54,7 +52,7 @@ class OrderDetailPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                LocaleKeys.orderDetail_from.tr(),
+                                'от',
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
@@ -70,7 +68,7 @@ class OrderDetailPage extends StatelessWidget {
                                             BorderRadius.circular(10))),
                               ),
                               Text(
-                                LocaleKeys.orderDetail_to.tr(),
+                                'до',
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
@@ -86,7 +84,7 @@ class OrderDetailPage extends StatelessWidget {
                                             BorderRadius.circular(10))),
                               ),
                               Text(
-                                LocaleKeys.orderDetail_phone.tr(),
+                                'Номер клиента',
                                 textAlign: TextAlign.left,
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
@@ -126,9 +124,7 @@ class OrderDetailPage extends StatelessWidget {
                             Expanded(
                                 flex: 4,
                                 child: MainButton(
-                                    onTap: () {},
-                                    text: LocaleKeys.orderDetail_orderFinished
-                                        .tr())),
+                                    onTap: () {}, text: 'Заказ выполнен')),
                           ],
                         ),
                       )

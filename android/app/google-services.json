@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "211890996067",
+    "project_id": "elitetaxi-7ff56",
+    "storage_bucket": "elitetaxi-7ff56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211890996067:android:50ad6e9ffe883d457d4956",
+        "android_client_info": {
+          "package_name": "dev.peykam.elitetaxi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211890996067-q1r2e4t8jgh80t42n1erv4dgtcpslud3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy_PFUWhj1xUYlLl3ePAVouip_QyI7ar4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211890996067-q1r2e4t8jgh80t42n1erv4dgtcpslud3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "211890996067-sv607kd8r3se7o9g6v545qm28fh3shof.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.peykam.elitetaxi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211890996067:android:d20cd28f6e0ae0bf7d4956",
+        "android_client_info": {
+          "package_name": "dev.peykam.elitetaxi.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211890996067-q1r2e4t8jgh80t42n1erv4dgtcpslud3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy_PFUWhj1xUYlLl3ePAVouip_QyI7ar4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211890996067-q1r2e4t8jgh80t42n1erv4dgtcpslud3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "211890996067-sv607kd8r3se7o9g6v545qm28fh3shof.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.peykam.elitetaxi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

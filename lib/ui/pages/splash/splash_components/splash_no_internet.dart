@@ -1,7 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:taxipark_driver/generated/locale_keys.g.dart';
 
 class SplashNoInternet extends StatelessWidget {
   final Function onRetry;
@@ -24,12 +22,12 @@ class SplashNoInternet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.error, size: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 15),
                 child: Text(
-                  LocaleKeys.warnings_noInternet.tr(),
+                  'Нет подключения к Интернету, попробуйте еще раз.',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 17),
+                  style: TextStyle(fontSize: 17),
                 ),
               ),
               Row(
@@ -37,15 +35,13 @@ class SplashNoInternet extends StatelessWidget {
                 children: [
                   TextButton(
                       onPressed: () => SystemNavigator.pop(),
-                      child: Text(
-                        LocaleKeys.buttons_cancel.tr(),
-                        style: const TextStyle(color: Colors.red),
+                      child: const Text(
+                        'Отмена',
+                        style: TextStyle(color: Colors.red),
                       )),
                   TextButton(
                       onPressed: () => onRetry.call(),
-                      child: Text(
-                        LocaleKeys.buttons_retry.tr(),
-                      )),
+                      child: const Text('Попробовать')),
                 ],
               )
             ],

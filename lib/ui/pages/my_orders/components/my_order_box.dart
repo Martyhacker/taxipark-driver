@@ -1,9 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxipark_driver/core/api/models/order_model.dart';
 import 'package:taxipark_driver/core/constants/constants.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
-import 'package:taxipark_driver/generated/locale_keys.g.dart';
 
 class MyOrderBox extends StatelessWidget {
   final OrderModel model;
@@ -48,9 +46,9 @@ class MyOrderBox extends StatelessWidget {
                   decoration: const BoxDecoration(
                       color: Palette.yellow,
                       borderRadius: kDefaultBorderRadius),
-                  child: Text(
-                    LocaleKeys.orderBox_cancel.tr(),
-                    style: const TextStyle(color: Palette.white),
+                  child: const Text(
+                    'Отмена',
+                    style: TextStyle(color: Palette.white),
                   ))
             ],
           )

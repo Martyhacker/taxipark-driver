@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:taxipark_driver/core/preferences/preference_keys.dart';
 import 'package:taxipark_driver/core/preferences/preferences_util.dart';
@@ -118,15 +119,13 @@ class AuthProvider extends ChangeNotifier {
   }
 
   updateFCM() async {
-    //TODO: I have to add Cloud Messaging to this project
-
-    // if (API.userToken.isEmpty) return;
-    // String? token = await FirebaseMessaging.instance.getToken() ?? 'no';
-    // await AuthService().updateFCM(fcmToken: token).then((res) {
-    //   return;
-    // }).catchError((err) {
-    //   debugPrint("I am in auth provider: $err");
-    // });
+    if (API.userToken.isEmpty) return;
+    String? token = await FirebaseMessaging.instance.getToken() ?? 'no';
+    await AuthService().updateFcm(token: token).then((res) {
+      return;
+    }).catchError((err) {
+      debugPrint("I am in auth provider: $err");
+    });
   }
 
   //TODO: I will need a GSM modem

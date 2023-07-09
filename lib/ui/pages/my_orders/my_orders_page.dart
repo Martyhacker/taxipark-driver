@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taxipark_driver/core/api/models/order_model.dart';
@@ -20,8 +19,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   void initState() {
     super.initState();
     _controller.addListener(() {
-      bool _isTop = _controller.position.pixels == 0;
-      if (!_isTop) {
+      bool isTop = _controller.position.pixels == 0;
+      if (!isTop) {
         context.read<OrderProvider>().fetchOrders();
       }
     });

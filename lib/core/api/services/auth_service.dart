@@ -34,4 +34,15 @@ class AuthService {
       throw Exception("Unable get user profile");
     }
   }
+
+  Future<bool> updateFcm({required String token}) async {
+    final url = Uri.http(API.host, API.fcm);
+    final body = jsonEncode({"fcmToken": token});
+    final headers = {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer ${API.userToken}"
+    };
+    final response = await http.patch(url, headers: headers, body: body);
+    return response.statusCode == 200;
+  }
 }
