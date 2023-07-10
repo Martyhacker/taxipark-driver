@@ -1,13 +1,12 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:taxipark_driver/core/api/providers/auth_provider.dart';
-// import 'package:taxipark_driver/core/api/providers/finder_provider.dart';
 import 'package:taxipark_driver/core/api/providers/map_procider.dart';
 import 'package:taxipark_driver/core/api/providers/modal_provider.dart';
 
 import 'finder_provider.dart';
+import 'location_provider.dart';
 import 'order_provider.dart';
-// import 'package:taxipark_driver/core/api/providers/picked_point_provider.dart';
 
 class AppProviders {
   AppProviders._init();
@@ -18,7 +17,7 @@ class AppProviders {
   }
 
   List<SingleChildWidget> allProviders = [
-    // ChangeNotifierProvider(create: (_)=> LocationProvider()),
+    ChangeNotifierProvider<LocationProvider>(create: (_) => LocationProvider()),
     ChangeNotifierProvider<ModalProvider>(create: (_) => ModalProvider()),
     // ChangeNotifierProvider<PickedPointProvider>(
     //     create: (_) => PickedPointProvider()),

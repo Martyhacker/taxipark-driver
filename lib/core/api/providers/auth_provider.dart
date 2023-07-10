@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:taxipark_driver/core/api/models/user_model.dart';
 import 'package:taxipark_driver/core/preferences/preference_keys.dart';
 import 'package:taxipark_driver/core/preferences/preferences_util.dart';
 
@@ -9,6 +10,8 @@ import '../services/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final PreferenceManager cache = PreferenceManager.instance;
+  UserModel? _model;
+  UserModel? get model => _model;
   String? token;
   bool isLoggedIn = false;
   String _username = "";
@@ -19,8 +22,6 @@ class AuthProvider extends ChangeNotifier {
   String get phoneNumber => _phoneNumber;
   String get password => _password;
   initData({VoidCallback? onSuccess, VoidCallback? onError}) {
-    // return _prefs.then((prefs) async {
-    _username = cache.getStringValue(PreferenceKeys.USER_FULLNAME);
     _password = cache.getStringValue(PreferenceKeys.USER_PASS);
     _phoneNumber = cache.getStringValue(PreferenceKeys.USER_PHONE);
     if (_phoneNumber.isEmpty || _password.isEmpty) return onError?.call();
@@ -32,6 +33,7 @@ class AuthProvider extends ChangeNotifier {
           onLogin: () {
             onSuccess?.call();
             updateFCM.call();
+            profile.call();
           });
     }
     // });
@@ -111,6 +113,7 @@ class AuthProvider extends ChangeNotifier {
     return AuthService().profile().then((value) {
       _username = value.username ?? "";
       _phoneNumber = value.phone ?? "";
+      _model = value;
       onSuccess?.call();
       notifyListeners();
     }).catchError((err) {
@@ -128,6 +131,15 @@ class AuthProvider extends ChangeNotifier {
     });
   }
 
+  changeAvailability(
+      {required bool availability, Function? onSuccess, Function? onError}) {
+    return AuthService()
+        .updateMe(body: {"isAvailable": availability}).then((value) {
+      _model = value;
+      notifyListeners();
+      onSuccess?.call();
+    }).catchError((err) {});
+  }
   //TODO: I will need a GSM modem
 
   // getSmsData(

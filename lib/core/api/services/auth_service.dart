@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import '../api.dart';
 import '../models/token_model.dart';
@@ -41,6 +42,37 @@ class AuthService {
     final headers = {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer ${API.userToken}"
+    };
+    final response = await http.patch(url, headers: headers, body: body);
+    return response.statusCode == 200;
+  }
+
+  Future<UserModel> updateMe({required Map<String, dynamic> body}) async {
+    if (body.isEmpty) throw Exception("Body might not be empty!");
+    final url = Uri.http(API.host, API.profile);
+    final headers = {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer ${API.userToken}"
+    };
+    final response =
+        await http.patch(url, headers: headers, body: json.encode(body));
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Unable update profile");
+    }
+  }
+
+  Future<bool> updateLocation({required Position position}) async {
+    final url = Uri.http(API.host, API.position);
+    final body = json.encode({
+      "lat": position.latitude,
+      "lng": position.longitude,
+      "degree": position.heading
+    });
+    final headers = {
+      HttpHeaders.authorizationHeader: "Bearer ${API.userToken}",
+      HttpHeaders.contentTypeHeader: "application/json"
     };
     final response = await http.patch(url, headers: headers, body: body);
     return response.statusCode == 200;

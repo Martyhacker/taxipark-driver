@@ -1,15 +1,56 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_star/custom_rating.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:taxipark_driver/core/constants/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:taxipark_driver/core/api/providers/auth_provider.dart';
+import 'package:taxipark_driver/core/api/providers/location_provider.dart';
 import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/style/icon_assets.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
-import 'package:taxipark_driver/core/style/shadows.dart';
-import 'package:taxipark_driver/ui/widgets/main_button.dart';
+import 'package:taxipark_driver/ui/pages/home/components/availibility_button.dart';
 
-class HomePage extends StatelessWidget {
+import 'components/home_button.dart';
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int lastTap = DateTime.now().millisecondsSinceEpoch;
+  int consecutiveTaps = 0;
+  Timer? t;
+  _onSuccess() {
+    context.read<LocationProvider>().getLocation(onError: () {
+      ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+          const SnackBar(content: Text('Задача успешно выполнена!')));
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<LocationProvider>().checkPermissions();
+    t = Timer.periodic(const Duration(seconds: 5), (timer) {
+      context.read<LocationProvider>().getLocation(onError: () {
+        ScaffoldMessenger.maybeOf(context)
+            ?.showSnackBar(const SnackBar(content: Text('Произошла ошибка!')));
+      }, onPermissionError: () {
+        ScaffoldMessenger.maybeOf(context)?.showSnackBar(const SnackBar(
+            content: Text("Пожалуйста, дайте разрешения на местоположение.")));
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    t?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +59,35 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(IconAssets.profile, color: Palette.yellow),
+            // ignore: deprecated_member_use
+            InkWell(
+                onTap: () {
+                  int now = DateTime.now().millisecondsSinceEpoch;
+                  if (now - lastTap < 1000) {
+                    consecutiveTaps++;
+                    if (consecutiveTaps > 4) {
+                      consecutiveTaps = 0;
+                      t?.cancel();
+                      debugPrint("BOOM");
+                    }
+                  } else {
+                    consecutiveTaps = 0;
+                  }
+                  lastTap = now;
+                },
+                child: SvgPicture.asset(IconAssets.profile,
+                    // ignore: deprecated_member_use
+                    color: Palette.yellow)),
             Text(
-              "Kemal",
+              context.watch<AuthProvider>().username,
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            CustomRating(
-              onRating: (v) {},
-              score: 4,
-              max: 5,
-            ),
+            if (context.read<AuthProvider>().model != null)
+              IgnorePointer(
+                child: CustomRating(
+                    onRating: (v) {},
+                    score: context.watch<AuthProvider>().model?.rating ?? 0),
+              ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Row(
@@ -35,16 +95,14 @@ class HomePage extends StatelessWidget {
                 children: [
                   Expanded(
                       child: HomeButton(
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.orderDetail);
-                          },
+                          onTap: () =>
+                              Navigator.pushNamed(context, Routes.orderDetail),
                           title: 'Просмотр заказа',
                           badgeCount: 2)),
                   Expanded(
                       child: HomeButton(
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.myOrders);
-                          },
+                          onTap: () =>
+                              Navigator.pushNamed(context, Routes.myOrders),
                           title: 'Выполненные заказы',
                           badgeCount: 2)),
                 ],
@@ -63,75 +121,17 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MainButton(
-                  onTap: () {},
-                  text: 'Свободный|Не свободный',
-                  padding: const EdgeInsets.all(15),
-                ),
-              ],
-            )
+            if (context.watch<AuthProvider>().model != null)
+              AvailibilityButton(onTap: () {
+                context.read<AuthProvider>().changeAvailability(
+                    availability:
+                        !(context.read<AuthProvider>().model?.isAvailable ??
+                            true),
+                    onSuccess: () => _onSuccess.call());
+              })
           ],
         ),
       ),
-    );
-  }
-}
-
-class HomeButton extends StatelessWidget {
-  final VoidCallback onTap;
-  final String title;
-  final int? badgeCount;
-  const HomeButton({
-    super.key,
-    required this.onTap,
-    required this.title,
-    this.badgeCount,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Stack(
-      children: [
-        InkWell(
-          borderRadius: kDefaultBorderRadius,
-          onTap: onTap,
-          child: Container(
-            width: double.infinity,
-            height: size.width / 3,
-            alignment: Alignment.center,
-            margin: const EdgeInsets.all(5),
-            padding: const EdgeInsets.all(25),
-            decoration: const BoxDecoration(
-                color: Palette.yellow,
-                boxShadow: Shadows.defaultShadow,
-                borderRadius: kDefaultBorderRadius),
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-        ),
-        if (badgeCount != null)
-          Positioned(
-              top: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                ),
-                child: Text(
-                  badgeCount.toString(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ))
-      ],
     );
   }
 }

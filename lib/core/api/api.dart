@@ -6,6 +6,7 @@ class API {
   //Auth
   static const login = "/drivers/login";
   static const profile = "/drivers/profile";
+  static const position = "/drivers/profile/position";
   static const fcm = "/drivers/fcm";
   //Orders
   static const orders = "/drivers/orders";
