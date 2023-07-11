@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:taxipark_driver/core/routes/transitions/slide_route.dart';
 import 'package:taxipark_driver/ui/pages/index.dart';
+import 'package:taxipark_driver/ui/pages/order_detail/order_detail_map_page.dart';
 import 'package:taxipark_driver/ui/pages/order_detail/order_detail_page.dart';
+import 'package:taxipark_driver/ui/pages/statistics/statistics_page.dart';
 
 import 'routes.dart';
 
@@ -12,6 +14,8 @@ class RouteGenerator {
         return SlideLeftRoute(page: const SplashPage(), settings: settings);
       case Routes.home:
         return SlideLeftRoute(page: const HomePage(), settings: settings);
+      case Routes.statistics:
+        return SlideLeftRoute(page: const StatisticsPage(), settings: settings);
       case Routes.login:
         return SlideLeftRoute(page: const LoginPage(), settings: settings);
       case Routes.profile:
@@ -21,6 +25,9 @@ class RouteGenerator {
       case Routes.orderDetail:
         return SlideLeftRoute(
             page: const OrderDetailPage(), settings: settings);
+      case Routes.orderDetailMap:
+        return SlideLeftRoute(
+            page: const OrderDetailMapPage(), settings: settings);
       default:
         return SlideLeftRoute(page: const ErrorRoute(), settings: settings);
     }

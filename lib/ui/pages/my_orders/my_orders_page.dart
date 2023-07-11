@@ -19,11 +19,14 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   void initState() {
     super.initState();
     _controller.addListener(() {
-      bool isTop = _controller.position.pixels == 0;
-      if (!isTop) {
-        context.read<OrderProvider>().fetchOrders();
+      if (_controller.position.atEdge) {
+        bool isTop = _controller.position.pixels == 0;
+        if (!isTop) {
+          context.read<OrderProvider>().fetchOrders();
+        }
       }
     });
+    context.read<OrderProvider>().reset();
     context.read<OrderProvider>().fetchOrders();
   }
 
@@ -48,7 +51,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                     color: Colors.black)),
             centerTitle: true,
             title: const Text(
-              "My orders",
+              "Заказы",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -60,7 +63,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
             if (index == count) {
               return const SizedBox();
             }
-            return MyOrderBox(model: orders[index]);
+            return OrderBox(model: orders[index]);
           }, childCount: orders.length + 1))
         ],
       ),

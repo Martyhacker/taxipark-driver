@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_star/custom_rating.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:taxipark_driver/core/api/models/statistics_model.dart';
 import 'package:taxipark_driver/core/api/providers/auth_provider.dart';
 import 'package:taxipark_driver/core/api/providers/location_provider.dart';
+import 'package:taxipark_driver/core/api/providers/statistics_provider.dart';
 import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/style/icon_assets.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
@@ -54,6 +56,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    StatisticsModel? statistics = context.watch<StatisticsProvider>().model;
     return Scaffold(
       body: Center(
         child: Column(
@@ -97,14 +100,13 @@ class _HomePageState extends State<HomePage> {
                       child: HomeButton(
                           onTap: () =>
                               Navigator.pushNamed(context, Routes.orderDetail),
-                          title: 'Просмотр заказа',
-                          badgeCount: 2)),
+                          title: 'Все заказы')),
                   Expanded(
                       child: HomeButton(
                           onTap: () =>
                               Navigator.pushNamed(context, Routes.myOrders),
                           title: 'Выполненные заказы',
-                          badgeCount: 2)),
+                          badgeCount: statistics?.orders?.completedOrders)),
                 ],
               ),
             ),
@@ -115,9 +117,14 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                       child: HomeButton(
                           onTap: () {},
-                          title: 'Отмененные заказы',
-                          badgeCount: 2)),
-                  Expanded(child: HomeButton(onTap: () {}, title: 'Заказы')),
+                          title: 'Заказы в ожидании',
+                          badgeCount: statistics?.orders?.waitingOrders)),
+                  Expanded(
+                      child: HomeButton(
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.statistics);
+                          },
+                          title: 'Statistics')),
                 ],
               ),
             ),

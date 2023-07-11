@@ -4,17 +4,18 @@ import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/core/style/shadows.dart';
 
 class MainButton extends StatelessWidget {
-  const MainButton({
-    super.key,
-    required this.onTap,
-    required this.text,
-    this.padding,
-    this.margin,
-  });
+  const MainButton(
+      {super.key,
+      required this.onTap,
+      required this.text,
+      this.padding,
+      this.margin,
+      this.buttonColor});
 
   final Function() onTap;
   final String text;
   final EdgeInsetsGeometry? padding, margin;
+  final Color? buttonColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +25,9 @@ class MainButton extends StatelessWidget {
         alignment: Alignment.center,
         padding: padding,
         margin: margin ?? const EdgeInsets.all(5),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             boxShadow: Shadows.defaultShadow,
-            color: Palette.yellow,
+            color: buttonColor ?? Palette.yellow,
             borderRadius: kDefaultBorderRadius),
         child: Text(
           text,

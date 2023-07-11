@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taxipark_driver/core/api/providers/auth_provider.dart';
+import 'package:taxipark_driver/core/api/providers/statistics_provider.dart';
 import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/utils/notification_util.dart';
 
@@ -57,6 +58,7 @@ class _SplashPageState extends State<SplashPage> {
     context.read<AuthProvider>().initData(onError: () {
       Navigator.pushReplacementNamed(context, Routes.login);
     }, onSuccess: () {
+      context.read<StatisticsProvider>().getStatistics();
       Navigator.pushReplacementNamed(context, Routes.home);
     });
   }

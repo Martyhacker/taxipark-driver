@@ -10,8 +10,6 @@ import '../models/my_route_model.dart';
 class FinderServices {
   Future<MyRouteModel> findRoute(
       {required LatLng start, required LatLng end}) async {
-    // final url = Uri.http("216.250.10.167:1600","/public/apk/route.json");
-
     final url = Uri.http(API.host, API.path);
     final headers = {
       HttpHeaders.contentTypeHeader: "application/json",

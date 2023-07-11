@@ -140,24 +140,4 @@ class AuthProvider extends ChangeNotifier {
       onSuccess?.call();
     }).catchError((err) {});
   }
-  //TODO: I will need a GSM modem
-
-  // getSmsData(
-  //     {required String telephone,
-  //     required String text,
-  //     Function? onUserAlreadyExists,
-  //     Function? onSuccess}) {
-  //   return AuthService()
-  //       .getSMSData(phoneNumber: telephone, password: text)
-  //       .then((value) {
-  //     if (value['status'] == '200' && onSuccess != null) {
-  //       _servicePhone = value['telephone'];
-  //       _tempCode = value['code'];
-  //       onSuccess.call();
-  //     } else if (value['status'] == '201' && onUserAlreadyExists != null) {
-  //       if (value['token'] != '') token = value['token'];
-  //       onUserAlreadyExists.call();
-  //     }
-  //   });
-  // }
 }

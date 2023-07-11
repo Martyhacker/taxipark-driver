@@ -42,7 +42,7 @@ class OrderDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
                     boxShadow: Shadows.defaultShadow,
                     color: Palette.yellow,
                     borderRadius: kDefaultBorderRadius),
-                child: const Text("Start counter"),
+                child: const Text("включить счётчик"),
               ))
         ],
       ),

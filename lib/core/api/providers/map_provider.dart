@@ -6,7 +6,8 @@ class MapProvider extends ChangeNotifier {
   final _mapController = MapController();
   MapController get mapController => _mapController;
 
-  moveCamera(LatLng coordinates) {
+  moveCamera(LatLng? coordinates) {
+    if (coordinates == null) return;
     _mapController.move(coordinates, 15);
     notifyListeners();
   }

@@ -1,151 +1,217 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:taxipark_driver/core/constants/constants.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:taxipark_driver/core/api/models/order_model.dart';
+import 'package:taxipark_driver/core/api/providers/order_provider.dart';
+import 'package:taxipark_driver/core/routes/routes.dart';
+import 'package:taxipark_driver/core/style/icon_assets.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
-import 'package:taxipark_driver/core/style/shadows.dart';
-import 'package:taxipark_driver/ui/pages/order_detail/components/order_detail_appbar.dart';
+import 'package:taxipark_driver/core/utils/telephony_util.dart';
+import 'package:taxipark_driver/ui/widgets/default_appbar.dart';
 import 'package:taxipark_driver/ui/widgets/main_button.dart';
 
-class OrderDetailPage extends StatelessWidget {
+class OrderDetailPage extends StatefulWidget {
   const OrderDetailPage({super.key});
 
   @override
+  State<OrderDetailPage> createState() => _OrderDetailPageState();
+}
+
+class _OrderDetailPageState extends State<OrderDetailPage> {
+  bool isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    setState(() => isLoading = true);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _fetchOrder.call();
+    });
+  }
+
+  _fetchOrder() {
+    var args =
+        ModalRoute.of(context)?.settings.arguments as OrderDetailPageArgs;
+    if (args.model.id != null) {
+      context.read<OrderProvider>().fetchOneOrder(
+          id: args.model.id!,
+          onSuccess: () {
+            setState(() => isLoading = false);
+          });
+    }
+  }
+
+  _onCancelled() {
+    ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+        const SnackBar(content: Text("Вы отменили этот заказ!")));
+    context.read<OrderProvider>().reset();
+    context.read<OrderProvider>().fetchOrders();
+    Navigator.pop(context);
+  }
+
+  _onAccepted() {
+    ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+        const SnackBar(content: Text("Задача успешно выполнена!")));
+    setState(() => isLoading = true);
+    _fetchOrder.call();
+  }
+
+  _onError() {
+    ScaffoldMessenger.maybeOf(context)
+        ?.showSnackBar(const SnackBar(content: Text("Error occured")));
+  }
+
+  _cancelOrder() {
+    if (context.read<OrderProvider>().order == null &&
+        context.read<OrderProvider>().order?.id == null) return;
+    context.read<OrderProvider>().changeStatus(
+        id: context.read<OrderProvider>().order!.id!,
+        status: "CANCELLED(DRIVER)",
+        onSuccess: _onCancelled,
+        onError: _onError);
+  }
+
+  _acceptOrder() {
+    if (context.read<OrderProvider>().order == null &&
+        context.read<OrderProvider>().order?.id == null) return;
+    context.read<OrderProvider>().changeStatus(
+        id: context.read<OrderProvider>().order!.id!,
+        status: "ACCEPTED",
+        onSuccess: _onAccepted,
+        onError: _onError);
+  }
+
+  _finishOrder() {
+    if (context.read<OrderProvider>().order == null &&
+        context.read<OrderProvider>().order?.id == null) return;
+    context.read<OrderProvider>().changeStatus(
+        id: context.read<OrderProvider>().order!.id!,
+        status: "COMPLETED",
+        onSuccess: _onAccepted,
+        onError: _onError);
+  }
+
+  _startCounter() {
+    if (context.read<OrderProvider>().order == null &&
+        context.read<OrderProvider>().order?.id == null) return;
+    context.read<OrderProvider>().changeOrder(
+        id: context.read<OrderProvider>().order!.id!,
+        body: {"counter_start_time": "start"},
+        onSuccess: _onAccepted,
+        onError: _onError);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    OrderModel? model = context.watch<OrderProvider>().order;
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: const OrderDetailAppBar(),
-      bottomSheet: 1 != 2
+      appBar: const DefaultAppBar(title: 'Подробности'),
+      bottomNavigationBar: model == null
           ? null
-          : Container(
-              padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                  color: Palette.lightGrey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  )),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    height: 8,
-                    margin: const EdgeInsets.only(bottom: 25),
-                    decoration: BoxDecoration(
-                        color: Palette.grey,
-                        borderRadius: BorderRadius.circular(50)),
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Поступивший заказ',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      Container(
-                          padding: const EdgeInsets.all(15),
-                          margin: const EdgeInsets.symmetric(vertical: 15),
-                          decoration: const BoxDecoration(
-                              color: Palette.white,
-                              borderRadius: kDefaultBorderRadius),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'от',
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 12),
-                                    filled: true,
-                                    fillColor: Palette.lightGrey,
-                                    hintText: "Address...",
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                              ),
-                              Text(
-                                'до',
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 12),
-                                    filled: true,
-                                    fillColor: Palette.lightGrey,
-                                    hintText: "Address...",
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                              ),
-                              Text(
-                                'Номер клиента',
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 12),
-                                    filled: true,
-                                    fillColor: Palette.lightGrey,
-                                    hintText: "+99362980257",
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                              ),
-                            ],
-                          )),
-                      SizedBox(
-                        height: kToolbarHeight,
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: InkWell(
-                              onTap: () {},
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: const EdgeInsets.all(5),
-                                decoration: const BoxDecoration(
-                                    boxShadow: Shadows.defaultShadow,
-                                    color: Palette.yellow,
-                                    borderRadius: kDefaultBorderRadius),
-                                child: const Icon(
-                                  Icons.cancel,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )),
-                            Expanded(
-                                flex: 4,
-                                child: MainButton(
-                                    onTap: () {}, text: 'Заказ выполнен')),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
+          : BottomAppBar(
+              color: Colors.transparent,
+              elevation: 0,
+              child: SizedBox(
+                height: kToolbarHeight,
+                child: Row(
+                  children: [
+                    if (model.acceptedTime == null)
+                      Expanded(
+                          child: MainButton(
+                              padding: const EdgeInsets.all(10),
+                              buttonColor: Colors.red,
+                              onTap: () {
+                                _cancelOrder.call();
+                              },
+                              text: "Отмена")),
+                    if (model.acceptedTime == null)
+                      Expanded(
+                          child: MainButton(
+                              padding: const EdgeInsets.all(10),
+                              onTap: () {
+                                _acceptOrder.call();
+                              },
+                              text: "Принимать")),
+                    if (model.acceptedTime != null &&
+                        model.counterStartTime == null)
+                      Expanded(
+                          child: MainButton(
+                              padding: const EdgeInsets.all(10),
+                              onTap: () {
+                                _startCounter.call();
+                              },
+                              text: "Bключить счётчик")),
+                    if (model.acceptedTime != null &&
+                        model.endedTime == null &&
+                        model.counterStartTime != null)
+                      Expanded(
+                          child: MainButton(
+                              buttonColor: Colors.green,
+                              padding: const EdgeInsets.all(10),
+                              onTap: () {
+                                _finishOrder.call();
+                              },
+                              text: "Завершить")),
+                  ],
+                ),
               ),
             ),
-      body: Stack(
-        children: [
-          FlutterMap(
-            options:
-                MapOptions(maxBounds: kMaxBounds, center: kDefaultLocation),
-            children: [
-              TileLayer(
-                urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-              )
-            ],
-          ),
-        ],
-      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : (model == null)
+              ? const SizedBox()
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      if ((model.start?.isNotEmpty ?? false) &&
+                          model.start != null)
+                        ListTile(
+                          leading: SvgPicture.asset(IconAssets.gps),
+                          title: Text(model.start ?? ""),
+                        ),
+                      if ((model.destination?.isNotEmpty ?? false) &&
+                          model.destination != null)
+                        ListTile(
+                          leading: SvgPicture.asset(IconAssets.gps),
+                          title: Text(model.destination ?? ""),
+                        ),
+                      if (model.startLat != null &&
+                          model.startLon != null &&
+                          model.destLat != null &&
+                          model.destLon != null)
+                        ListTile(
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.orderDetailMap);
+                          },
+                          leading: const Icon(Icons.map, color: Palette.black),
+                          title: const Text("Клиент выбрал точки на карте"),
+                          subtitle: const Text("Нажмите, чтобы открыть карту"),
+                        ),
+                      ListTile(
+                        leading: const Icon(Icons.local_taxi_outlined,
+                            color: Palette.black),
+                        title: Text(model.orderType ?? ""),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.person, color: Palette.black),
+                        title: Text(model.username ?? ""),
+                      ),
+                      ListTile(
+                        onTap: () async {
+                          if (model.phone?.isNotEmpty ?? false) {
+                            await TelephonyUtil.call(model.phone!);
+                          }
+                        },
+                        leading: const Icon(Icons.phone, color: Palette.black),
+                        title: Text(model.phone ?? ""),
+                      ),
+                    ],
+                  ),
+                ),
     );
   }
+}
+
+class OrderDetailPageArgs {
+  final OrderModel model;
+  const OrderDetailPageArgs({required this.model});
 }

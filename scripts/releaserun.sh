@@ -1,6 +1,6 @@
 #!/bin/bash
 var=$(pwd)
-adb uninstall dev.peykam.taxipark
+adb uninstall dev.peykam.elitetaxi.driver
 flutter clean
 flutter pub get
 flutter build apk --split-per-abi

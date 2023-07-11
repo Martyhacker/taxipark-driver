@@ -8,6 +8,8 @@ class API {
   static const profile = "/drivers/profile";
   static const position = "/drivers/profile/position";
   static const fcm = "/drivers/fcm";
+  static const statistics = "/drivers/statistics";
   //Orders
-  static const orders = "/drivers/orders";
+  static const orders = "/drivers/orders/";
+  static const orderStatus = "/drivers/orders/status/";
 }

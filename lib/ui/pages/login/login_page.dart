@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:taxipark_driver/core/api/providers/auth_provider.dart';
 import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/utils/form_field_validator.dart';
+import 'package:taxipark_driver/ui/widgets/main_button.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/style/palette.dart';
@@ -108,23 +109,27 @@ class _LoginPageState extends State<LoginPage> {
                     )),
               ),
               const SizedBox(height: 40),
-              InkWell(
-                onTap: () {
-                  _login.call();
-                },
-                child: Container(
-                  alignment: Alignment.center,
+              MainButton(
                   padding: const EdgeInsets.all(15),
-                  decoration: const BoxDecoration(
-                      color: Palette.yellow,
-                      borderRadius: kDefaultBorderRadius,
-                      boxShadow: Shadows.defaultShadow),
-                  child: const Text(
-                    'Войти',
-                    style: TextStyle(color: Palette.white),
-                  ),
-                ),
-              ),
+                  onTap: () => _login.call(),
+                  text: "Войти"),
+              // InkWell(
+              //   onTap: () {
+              //     _login.call();
+              //   },
+              //   child: Container(
+              //     alignment: Alignment.center,
+              //     padding: const EdgeInsets.all(15),
+              //     decoration: const BoxDecoration(
+              //         color: Palette.yellow,
+              //         borderRadius: kDefaultBorderRadius,
+              //         boxShadow: Shadows.defaultShadow),
+              //     child: const Text(
+              //       'Войти',
+              //       style: TextStyle(color: Palette.white),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
+//TODO: Delete this provider
 
-enum ModalType { none, services, from, where, when }
+// import 'package:flutter/material.dart';
 
-class ModalProvider extends ChangeNotifier {
-  ModalType modalType = ModalType.services;
+// enum ModalType { none, services, from, where, when }
 
-  changeType(ModalType type) {
-    modalType = type;
-    notifyListeners();
-  }
-}
+// class ModalProvider extends ChangeNotifier {
+//   ModalType modalType = ModalType.services;
+
+//   changeType(ModalType type) {
+//     modalType = type;
+//     notifyListeners();
+//   }
+// }

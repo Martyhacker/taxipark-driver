@@ -39,7 +39,7 @@ class HomeButton extends StatelessWidget {
             ),
           ),
         ),
-        if (badgeCount != null)
+        if (badgeCount != null && badgeCount != 0)
           Positioned(
               top: 0,
               right: 0,
