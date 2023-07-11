@@ -12,6 +12,7 @@ import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/style/icon_assets.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/ui/pages/home/components/availibility_button.dart';
+import 'package:taxipark_driver/ui/pages/my_orders/my_orders_page.dart';
 
 import 'components/home_button.dart';
 
@@ -98,13 +99,17 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Expanded(
                       child: HomeButton(
-                          onTap: () =>
-                              Navigator.pushNamed(context, Routes.orderDetail),
+                          onTap: () => Navigator.pushNamed(
+                              context, Routes.myOrders,
+                              arguments: const MyOrdersPageArgs(
+                                  orderStatus: OrderStatus.ALL)),
                           title: 'Все заказы')),
                   Expanded(
                       child: HomeButton(
-                          onTap: () =>
-                              Navigator.pushNamed(context, Routes.myOrders),
+                          onTap: () => Navigator.pushNamed(
+                              context, Routes.myOrders,
+                              arguments: const MyOrdersPageArgs(
+                                  orderStatus: OrderStatus.COMPLETED)),
                           title: 'Выполненные заказы',
                           badgeCount: statistics?.orders?.completedOrders)),
                 ],
@@ -116,7 +121,10 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Expanded(
                       child: HomeButton(
-                          onTap: () {},
+                          onTap: () => Navigator.pushNamed(
+                              context, Routes.myOrders,
+                              arguments: const MyOrdersPageArgs(
+                                  orderStatus: OrderStatus.WAITING)),
                           title: 'Заказы в ожидании',
                           badgeCount: statistics?.orders?.waitingOrders)),
                   Expanded(

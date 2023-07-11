@@ -6,6 +6,9 @@ import 'package:taxipark_driver/core/constants/constants.dart';
 
 import 'components/my_order_box.dart';
 
+// ignore: constant_identifier_names
+enum OrderStatus { ALL, COMPLETED, WAITING }
+
 class MyOrdersPage extends StatefulWidget {
   const MyOrdersPage({super.key});
 
@@ -14,20 +17,48 @@ class MyOrdersPage extends StatefulWidget {
 }
 
 class _MyOrdersPageState extends State<MyOrdersPage> {
+  bool isLoading = false;
   final _controller = ScrollController();
+  OrderStatus orderStatus = OrderStatus.ALL;
+  String title = '';
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
-      if (_controller.position.atEdge) {
-        bool isTop = _controller.position.pixels == 0;
-        if (!isTop) {
-          context.read<OrderProvider>().fetchOrders();
-        }
-      }
-    });
+    setState(() => isLoading = true);
     context.read<OrderProvider>().reset();
-    context.read<OrderProvider>().fetchOrders();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var args = ModalRoute.of(context)?.settings.arguments as MyOrdersPageArgs;
+      setState(() {
+        switch (args.orderStatus) {
+          case OrderStatus.ALL:
+            title = 'Все заказы';
+            break;
+          case OrderStatus.COMPLETED:
+            title = 'Выполненные заказы';
+            break;
+          case OrderStatus.WAITING:
+            title = 'Заказы в ожидании';
+            break;
+          default:
+            title = 'Заказы';
+            break;
+        }
+      });
+      if (args.orderStatus != OrderStatus.ALL) {
+        orderStatus = args.orderStatus;
+        context.read<OrderProvider>().query = {"status": orderStatus.name};
+      }
+      _controller.addListener(() {
+        if (_controller.position.atEdge) {
+          bool isTop = _controller.position.pixels == 0;
+          if (!isTop) {
+            context.read<OrderProvider>().fetchOrders();
+          }
+        }
+      });
+      context.read<OrderProvider>().fetchOrders();
+      setState(() => isLoading = false);
+    });
   }
 
   @override
@@ -55,18 +86,24 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
               style: TextStyle(color: Colors.black),
             ),
           ),
-          SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-            if (isFetching) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (index == count) {
-              return const SizedBox();
-            }
-            return OrderBox(model: orders[index]);
-          }, childCount: orders.length + 1))
+          if (!isLoading)
+            SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+              if (isFetching) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (index == count) {
+                return const SizedBox();
+              }
+              return OrderBox(model: orders[index]);
+            }, childCount: orders.length + 1))
         ],
       ),
     );
   }
+}
+
+class MyOrdersPageArgs {
+  final OrderStatus orderStatus;
+  const MyOrdersPageArgs({required this.orderStatus});
 }

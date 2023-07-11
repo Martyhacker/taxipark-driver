@@ -15,6 +15,12 @@ class OrderProvider extends ChangeNotifier {
 
   int _offset = 0;
   final int _limit = kLimit;
+  Map<String, String> _query = {};
+  set query(Map<String, String> q) {
+    _query = q;
+    notifyListeners();
+  }
+
   _addAllOrders(value) {
     _orders.addAll(value);
     _offset += _limit;
@@ -22,6 +28,7 @@ class OrderProvider extends ChangeNotifier {
   }
 
   reset() {
+    _query.clear();
     _orders.clear();
     _count = 0;
     _offset = 0;
@@ -38,16 +45,17 @@ class OrderProvider extends ChangeNotifier {
     });
   }
 
-  fetchOrders() {
+  fetchOrders({Function? onSuccess}) {
     if (_isFetching) return;
     _isFetching = true;
     return OrderService()
-        .getOrders(limit: _limit, offset: _offset)
+        .getOrders(limit: _limit, offset: _offset, query: _query)
         .then((value) {
       if (value['data'].isNotEmpty) {
         _addAllOrders(value['data']);
         _count = value['count'];
       }
+      onSuccess?.call();
       _isFetching = false;
       notifyListeners();
     }).catchError((err) {

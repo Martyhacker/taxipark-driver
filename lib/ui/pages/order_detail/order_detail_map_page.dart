@@ -11,7 +11,8 @@ import 'package:taxipark_driver/core/api/providers/map_provider.dart';
 import 'package:taxipark_driver/core/api/providers/order_provider.dart';
 import 'package:taxipark_driver/core/constants/constants.dart';
 import 'package:taxipark_driver/core/style/icon_assets.dart';
-import 'package:taxipark_driver/ui/pages/order_detail/components/order_detail_appbar.dart';
+import 'package:taxipark_driver/core/style/palette.dart';
+import 'package:taxipark_driver/ui/widgets/default_appbar.dart';
 
 import 'components/map_bottom_sheet.dart';
 
@@ -45,9 +46,10 @@ class _OrderDetailMapPageState extends State<OrderDetailMapPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      appBar: const OrderDetailAppBar(),
+      appBar: const DefaultAppBar(title: 'Карта'),
       bottomSheet: 1 == 1 ? null : const MapBottomSheet(),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Palette.lightGrey,
         onPressed: () {
           if (context.read<LocationProvider>().currentPosition == null) return;
           LatLng? point = LatLng(

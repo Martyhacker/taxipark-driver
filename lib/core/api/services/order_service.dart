@@ -8,9 +8,11 @@ import 'package:http/http.dart' as http;
 
 class OrderService {
   Future<Map<String, dynamic>> getOrders(
-      {int limit = kLimit, int offset = 0}) async {
-    final url = Uri.http(
-        API.host, API.orders, {"limit": "$limit", "offset": "$offset"});
+      {int limit = kLimit,
+      int offset = 0,
+      Map<String, String> query = const {}}) async {
+    final url = Uri.http(API.host, API.orders,
+        {"limit": "$limit", "offset": "$offset", ...query});
     final headers = {
       HttpHeaders.authorizationHeader: "Bearer ${API.userToken}",
       HttpHeaders.contentTypeHeader: "application/json"
