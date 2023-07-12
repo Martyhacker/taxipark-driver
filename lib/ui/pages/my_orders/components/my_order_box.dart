@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:taxipark_driver/core/api/models/order_model.dart';
@@ -8,9 +7,6 @@ import 'package:taxipark_driver/core/style/icon_assets.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/core/style/shadows.dart';
 import 'package:taxipark_driver/ui/pages/order_detail/order_detail_page.dart';
-import 'package:taxipark_driver/ui/widgets/dialogs/ok_dialog.dart';
-import 'package:taxipark_driver/ui/widgets/slidable/my_slidable.dart';
-import 'dart:io' show Platform;
 
 class OrderBox extends StatelessWidget {
   final OrderModel model;
