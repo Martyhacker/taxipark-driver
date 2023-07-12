@@ -21,75 +21,58 @@ class OrderBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MySlidable(
-      onCancelled: () {
-        Platform.isIOS
-            ? showCupertinoDialog(
-                context: context,
-                builder: (_) => OkDialog(
-                    title: "Info",
-                    content: "Are you sure cancel this order?",
-                    onOkTap: () {}))
-            : showDialog(
-                context: context,
-                builder: (_) => OkDialog(
-                    title: "Info",
-                    content: "Are you sure cancel this order?",
-                    onOkTap: () {}));
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, Routes.orderDetail,
+            arguments: OrderDetailPageArgs(model: model));
       },
-      child: InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, Routes.orderDetail,
-              arguments: OrderDetailPageArgs(model: model));
-        },
-        child: Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                boxShadow: Shadows.defaultShadow,
-                borderRadius: kDefaultBorderRadius,
-                color: Palette.lightGrey,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTile(
-                    leading: SvgPicture.asset(IconAssets.gps),
-                    title: Text(model.start ?? ""),
-                  ),
-                  ListTile(
-                    leading: SvgPicture.asset(IconAssets.gps),
-                    title: Text(model.destination ?? ""),
-                  ),
-                  ListTile(
-                    leading: const Icon(
-                      Icons.access_time,
-                      color: Palette.black,
-                    ),
-                    title: Text(model.time ?? "Now"),
-                  ),
-                ],
-              ),
+      child: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              boxShadow: Shadows.defaultShadow,
+              borderRadius: kDefaultBorderRadius,
+              color: Palette.lightGrey,
             ),
-            Positioned(
-              top: 30,
-              right: 50,
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                    color: model.status == "COMPLETED"
-                        ? Colors.green
-                        : Colors.orange,
-                    shape: BoxShape.circle,
-                    boxShadow: Shadows.defaultShadow),
-              ),
-            )
-          ],
-        ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  leading: SvgPicture.asset(IconAssets.gps),
+                  title: Text(model.start ?? ""),
+                ),
+                ListTile(
+                  leading: SvgPicture.asset(IconAssets.gps),
+                  title: Text(model.destination ?? ""),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.access_time,
+                    color: Palette.black,
+                  ),
+                  title: Text(model.time ?? "Сейчас"),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 30,
+            right: 50,
+            child: Container(
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                  color: model.status == "COMPLETED"
+                      ? Colors.green
+                      : Colors.orange,
+                  shape: BoxShape.circle,
+                  boxShadow: Shadows.defaultShadow),
+            ),
+          )
+        ],
       ),
     );
   }
