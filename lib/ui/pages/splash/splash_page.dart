@@ -4,8 +4,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:taxipark_driver/core/api/api.dart';
 import 'package:taxipark_driver/core/api/providers/auth_provider.dart';
 import 'package:taxipark_driver/core/api/providers/statistics_provider.dart';
+import 'package:taxipark_driver/core/constants/dev_constants.dart';
+import 'package:taxipark_driver/core/remote_config/remote_config_keys.dart';
+import 'package:taxipark_driver/core/remote_config/remote_config_service.dart';
 import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/utils/notification_util.dart';
 
@@ -53,6 +57,10 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   initAllData() {
+    final remoteConfig = RemoteConfigService();
+    API.host = remoteConfig.getString(RemoteConfigKeys.host);
+    API.tile = remoteConfig.getString(RemoteConfigKeys.tile);
+    DevConstants.playStore = remoteConfig.getString(RemoteConfigKeys.playStore);
     messaging.subscribeToTopic("elite-taxi-drivers");
     debugPrint("Init all data");
     context.read<AuthProvider>().initData(onError: () {

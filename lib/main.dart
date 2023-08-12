@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:taxipark_driver/core/remote_config/remote_config_service.dart';
 import 'package:taxipark_driver/core/routes/generator.dart';
 import 'package:taxipark_driver/core/use_case/no_network_widget.dart';
 import 'package:taxipark_driver/firebase_options.dart';
@@ -20,6 +21,7 @@ Future<void> _init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await PreferenceManager.prefrencesInit();
+  await RemoteConfigService().initialize();
 }
 
 class MyApp extends StatelessWidget {

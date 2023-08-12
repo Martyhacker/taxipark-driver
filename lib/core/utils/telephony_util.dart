@@ -38,9 +38,7 @@ class TelephonyUtil {
   }
 
   static Future<void> rateApp() async {
-    final androidUrl = Uri.parse(DevConstants.playMarket);
-    final iosUrl = Uri.parse(DevConstants.appleStore);
-    launchUrl(Platform.isAndroid ? androidUrl : iosUrl,
-        mode: LaunchMode.externalApplication);
+    final androidUrl = Uri.parse(DevConstants.playStore);
+    launchUrl(androidUrl, mode: LaunchMode.externalApplication);
   }
 }

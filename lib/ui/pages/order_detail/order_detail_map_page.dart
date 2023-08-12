@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
+import 'package:taxipark_driver/core/api/api.dart';
 import 'package:taxipark_driver/core/api/models/my_route_model.dart';
 import 'package:taxipark_driver/core/api/models/order_model.dart';
 import 'package:taxipark_driver/core/api/providers/finder_provider.dart';
@@ -15,6 +16,7 @@ import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/ui/widgets/default_appbar.dart';
 
 import 'components/map_bottom_sheet.dart';
+import 'dart:math' as math;
 
 class OrderDetailMapPage extends StatefulWidget {
   const OrderDetailMapPage({super.key});
@@ -24,6 +26,8 @@ class OrderDetailMapPage extends StatefulWidget {
 }
 
 class _OrderDetailMapPageState extends State<OrderDetailMapPage> {
+  double _rotation = 0;
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +69,12 @@ class _OrderDetailMapPageState extends State<OrderDetailMapPage> {
             mapController: context.watch<MapProvider>().mapController,
             options: MapOptions(
                 maxBounds: kMaxBounds,
+                onPositionChanged: (position, _) {
+                  setState(() {
+                    _rotation =
+                        context.read<MapProvider>().mapController.rotation;
+                  });
+                },
                 center: (model != null &&
                         model.startLat != null &&
                         model.startLon != null)
@@ -72,21 +82,28 @@ class _OrderDetailMapPageState extends State<OrderDetailMapPage> {
                     : kDefaultLocation),
             children: [
               TileLayer(
-                  urlTemplate:
+                  urlTemplate: API.tile,
+                  fallbackUrl:
                       "https://tile.openstreetmap.org/{z}/{x}/{y}.png"),
               if (model != null)
                 MarkerLayer(
                   markers: [
                     if (model.startLat != null && model.startLon != null)
                       Marker(
-                          point: LatLng(model.startLat!, model.startLon!),
-                          builder: (_) =>
-                              SvgPicture.asset(IconAssets.location)),
+                        rotate: false,
+                        point: LatLng(model.startLat!, model.startLon!),
+                        builder: (_) => Transform.rotate(
+                            angle: -_rotation * math.pi / 180,
+                            child: SvgPicture.asset(IconAssets.location)),
+                      ),
                     if (model.destLat != null && model.destLon != null)
                       Marker(
-                          point: LatLng(model.destLat!, model.destLon!),
-                          builder: (_) =>
-                              SvgPicture.asset(IconAssets.location)),
+                        rotate: false,
+                        point: LatLng(model.destLat!, model.destLon!),
+                        builder: (_) => Transform.rotate(
+                            angle: -_rotation * math.pi / 180,
+                            child: SvgPicture.asset(IconAssets.location)),
+                      ),
                   ],
                 ),
               if (route != null)

@@ -57,7 +57,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   _onError() {
     ScaffoldMessenger.maybeOf(context)
-        ?.showSnackBar(const SnackBar(content: Text("Error occured")));
+        ?.showSnackBar(const SnackBar(content: Text("Возникла ошибка")));
   }
 
   _cancelOrder() {

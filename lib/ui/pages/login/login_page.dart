@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final _tecPassword = TextEditingController();
   void _onError() {
     ScaffoldMessenger.maybeOf(context)
-        ?.showSnackBar(const SnackBar(content: Text("Error occured")));
+        ?.showSnackBar(const SnackBar(content: Text("Возникла ошибка")));
   }
 
   void _onSuccess() {
