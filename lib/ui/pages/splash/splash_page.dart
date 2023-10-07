@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taxipark_driver/core/api/api.dart';
 import 'package:taxipark_driver/core/api/providers/auth_provider.dart';
-import 'package:taxipark_driver/core/api/providers/statistics_provider.dart';
 import 'package:taxipark_driver/core/constants/dev_constants.dart';
+import 'package:taxipark_driver/core/preferences/preference_keys.dart';
+import 'package:taxipark_driver/core/preferences/preferences_util.dart';
 import 'package:taxipark_driver/core/remote_config/remote_config_keys.dart';
 import 'package:taxipark_driver/core/remote_config/remote_config_service.dart';
 import 'package:taxipark_driver/core/routes/routes.dart';
@@ -29,6 +30,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+    _notificationUtil.requestPermissions();
     _notificationUtil.initNotificationUtil(
         onSelectNotification: (v) {}, context: context);
     FirebaseMessaging.onMessage.listen(
@@ -63,10 +65,11 @@ class _SplashPageState extends State<SplashPage> {
     DevConstants.playStore = remoteConfig.getString(RemoteConfigKeys.playStore);
     messaging.subscribeToTopic("elite-taxi-drivers");
     debugPrint("Init all data");
+    PreferenceManager.instance
+        .setStringValue(PreferenceKeys.FSUX, "==Qa4FGVtF2a5VGU");
     context.read<AuthProvider>().initData(onError: () {
       Navigator.pushReplacementNamed(context, Routes.login);
     }, onSuccess: () {
-      context.read<StatisticsProvider>().getStatistics();
       Navigator.pushReplacementNamed(context, Routes.home);
     });
   }

@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    context.read<StatisticsProvider>().getStatistics();
     context.read<LocationProvider>().checkPermissions();
     t = Timer.periodic(const Duration(seconds: 5), (timer) {
       context.read<LocationProvider>().getLocation(onError: () {
@@ -85,6 +86,19 @@ class _HomePageState extends State<HomePage> {
             Text(
               context.watch<AuthProvider>().username,
               style: Theme.of(context).textTheme.titleLarge,
+            ),
+            Text(
+              context.watch<AuthProvider>().model?.carModel ?? "",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            Text(
+              (context.watch<AuthProvider>().model?.isVip ?? false)
+                  ? "VIP"
+                  : "",
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(color: Palette.yellow, fontWeight: FontWeight.bold),
             ),
             if (context.read<AuthProvider>().model != null)
               IgnorePointer(

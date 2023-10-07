@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 abstract class INotificationUtil {
   showNotification({required RemoteMessage msg});
+  Future<void> requestPermissions();
   initNotificationUtil(
       {required Function(String?)? onSelectNotification,
       required BuildContext context});

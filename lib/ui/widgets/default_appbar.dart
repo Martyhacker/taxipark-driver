@@ -6,14 +6,15 @@ import '../../core/style/palette.dart';
 
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final Color? backgroundColor;
   final List<Widget>? actions;
-  const DefaultAppBar({super.key,  this.actions, required this.title})
+  const DefaultAppBar({super.key,  this.actions, required this.title, this.backgroundColor})
       : preferredSize = const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: backgroundColor ?? Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
         centerTitle: true,

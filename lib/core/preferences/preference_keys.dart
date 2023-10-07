@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-enum PreferenceKeys{
+enum PreferenceKeys {
   IS_FIRST_APP,
   USER_FULLNAME,
   USER_PASS,
@@ -10,6 +10,6 @@ enum PreferenceKeys{
   USER_TOKEN,
   FAVORITE_PRODUCTS,
   SHOPPING_CART_PRODUCTS,
-  IS_DARK
-  
+  IS_DARK,
+  FSUX
 }

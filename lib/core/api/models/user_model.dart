@@ -2,9 +2,9 @@ class UserModel {
   int? id;
   String? username;
   String? password;
-  String? phone;
+  String? phone, carModel;
   bool? isAvailable;
-  bool? isOnline;
+  bool? isOnline, isVip;
   double? lat;
   double? lng;
   double? degree;
@@ -20,6 +20,8 @@ class UserModel {
       this.phone,
       this.isAvailable,
       this.isOnline,
+      this.isVip,
+      this.carModel,
       this.lat,
       this.lng,
       this.degree,
@@ -33,6 +35,8 @@ class UserModel {
     username = json['username'];
     password = json['password'];
     phone = json['phone'];
+    isVip = json['isVip'];
+    carModel = json['carModel'];
     isAvailable = json['isAvailable'];
     isOnline = json['isOnline'];
     lat = double.tryParse(json['lat'].toString());

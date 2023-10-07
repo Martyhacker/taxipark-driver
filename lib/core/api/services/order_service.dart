@@ -44,8 +44,7 @@ class OrderService {
     }
   }
 
-  Future<OrderModel> changeStatus(
-      {required int id, required String status}) async {
+  Future<int> changeStatus({required int id, required String status}) async {
     final url = Uri.http(API.host, "${API.orderStatus}$id");
     final headers = {
       HttpHeaders.contentTypeHeader: "application/json",
@@ -53,11 +52,7 @@ class OrderService {
     };
     final body = jsonEncode({"status": status});
     final response = await http.post(url, headers: headers, body: body);
-    if (response.statusCode == 200) {
-      return OrderModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception("Unable change order status");
-    }
+    return response.statusCode;
   }
 
   Future<OrderModel> changeOrder(

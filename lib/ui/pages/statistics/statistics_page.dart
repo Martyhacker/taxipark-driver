@@ -14,6 +14,12 @@ class StatisticsPage extends StatefulWidget {
 
 class _StatisticsPageState extends State<StatisticsPage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<StatisticsProvider>().getStatistics();
+  }
+
+  @override
   Widget build(BuildContext context) {
     StatisticsProvider provider = context.watch<StatisticsProvider>();
     return Scaffold(

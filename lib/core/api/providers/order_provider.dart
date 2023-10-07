@@ -83,11 +83,22 @@ class OrderProvider extends ChangeNotifier {
       {required int id,
       required String status,
       Function? onSuccess,
-      Function? onError}) {
+      Function? onError,
+      Function? onTaken}) {
     return OrderService()
         .changeStatus(id: id, status: status.toUpperCase())
         .then((value) {
-      onSuccess?.call();
+      switch (value) {
+        case 200:
+          onSuccess?.call();
+          break;
+        case 403:
+          onTaken?.call();
+          break;
+        default:
+          onError?.call();
+          break;
+      }
     }).catchError((err) {
       onError?.call();
       debugPrint("Change order status error: $err");

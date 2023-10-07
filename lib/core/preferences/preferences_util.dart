@@ -40,6 +40,9 @@ class PreferenceManager {
     await _preferences?.setString(key.name, value);
   }
 
+  String getSStringValue(PreferenceKeys key) =>
+      _preferences?.getString(key.name)?.split("").reversed.join() ?? '';
+
   String getStringValue(PreferenceKeys key) =>
       _preferences?.getString(key.name) ?? '';
 

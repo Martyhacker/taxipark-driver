@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:taxipark_driver/core/api/api.dart';
@@ -47,10 +48,14 @@ class _OrderDetailMapPageState extends State<OrderDetailMapPage> {
   Widget build(BuildContext context) {
     OrderModel? model = context.watch<OrderProvider>().order;
     MyRouteModel? route = context.watch<FinderProvider>().foundRoute;
+    Position? myPosition = context.watch<LocationProvider>().currentPosition;
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      appBar: const DefaultAppBar(title: 'Карта'),
+      appBar: const DefaultAppBar(
+        title: 'Карта',
+        backgroundColor: Colors.white,
+      ),
       bottomSheet: 1 == 1 ? null : const MapBottomSheet(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Palette.lightGrey,
@@ -68,6 +73,8 @@ class _OrderDetailMapPageState extends State<OrderDetailMapPage> {
           FlutterMap(
             mapController: context.watch<MapProvider>().mapController,
             options: MapOptions(
+                zoom: 17,
+                minZoom: 16,
                 maxBounds: kMaxBounds,
                 onPositionChanged: (position, _) {
                   setState(() {
@@ -84,7 +91,27 @@ class _OrderDetailMapPageState extends State<OrderDetailMapPage> {
               TileLayer(
                   urlTemplate: API.tile,
                   fallbackUrl:
-                      "https://tile.openstreetmap.org/{z}/{x}/{y}.png"),
+                      "https://osm.taxi.turkmenportal.com/tile/{z}/{x}/{y}.png"),
+              CircleLayer(circles: [
+                if (model != null &&
+                    model.startLat != null &&
+                    model.startLon != null)
+                  CircleMarker(
+                      borderColor: Colors.red,
+                      color: Colors.red.withOpacity(.5),
+                      point: LatLng(model.startLat!, model.startLon!),
+                      radius: 20,
+                      useRadiusInMeter: true),
+                if (model != null &&
+                    model.destLat != null &&
+                    model.destLon != null)
+                  CircleMarker(
+                      borderColor: Colors.blue,
+                      color: Colors.blue.withOpacity(.5),
+                      point: LatLng(model.destLat!, model.destLon!),
+                      radius: 20,
+                      useRadiusInMeter: true),
+              ]),
               if (model != null)
                 MarkerLayer(
                   markers: [
@@ -104,6 +131,11 @@ class _OrderDetailMapPageState extends State<OrderDetailMapPage> {
                             angle: -_rotation * math.pi / 180,
                             child: SvgPicture.asset(IconAssets.location)),
                       ),
+                    if (myPosition != null)
+                      Marker(
+                          point: LatLng(
+                              myPosition.latitude, myPosition.longitude),
+                          builder: (_) => const Icon(Icons.my_location))
                   ],
                 ),
               if (route != null)

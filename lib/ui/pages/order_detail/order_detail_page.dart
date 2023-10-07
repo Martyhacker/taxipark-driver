@@ -60,6 +60,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         ?.showSnackBar(const SnackBar(content: Text("Возникла ошибка")));
   }
 
+  _onTaken() {
+    ScaffoldMessenger.maybeOf(context)
+        ?.showSnackBar(const SnackBar(content: Text("Этот заказ уже принят!")));
+  }
+
   _cancelOrder() {
     if (context.read<OrderProvider>().order == null &&
         context.read<OrderProvider>().order?.id == null) return;
@@ -77,6 +82,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         id: context.read<OrderProvider>().order!.id!,
         status: "ACCEPTED",
         onSuccess: _onAccepted,
+        onTaken: _onTaken,
         onError: _onError);
   }
 
@@ -190,6 +196,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         leading: const Icon(Icons.local_taxi_outlined,
                             color: Palette.black),
                         title: Text(model.orderType ?? ""),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.attach_money_rounded,
+                            color: Palette.black),
+                        title: Text(model.price?.toString() ?? ""),
                       ),
                       ListTile(
                         leading: const Icon(Icons.person, color: Palette.black),

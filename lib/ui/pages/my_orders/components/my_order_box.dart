@@ -6,6 +6,7 @@ import 'package:taxipark_driver/core/routes/routes.dart';
 import 'package:taxipark_driver/core/style/icon_assets.dart';
 import 'package:taxipark_driver/core/style/palette.dart';
 import 'package:taxipark_driver/core/style/shadows.dart';
+import 'package:taxipark_driver/core/utils/utc_format_extension.dart';
 import 'package:taxipark_driver/ui/pages/order_detail/order_detail_page.dart';
 
 class OrderBox extends StatelessWidget {
@@ -49,7 +50,7 @@ class OrderBox extends StatelessWidget {
                     Icons.access_time,
                     color: Palette.black,
                   ),
-                  title: Text(model.time ?? "Сейчас"),
+                  title: Text(model.time?.convert2Local()),
                 ),
               ],
             ),

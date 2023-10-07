@@ -9,6 +9,7 @@ class OrderModel {
   double? startLon;
   double? destLat;
   double? destLon;
+  double? price;
   String? orderType;
   String? counterStartTime;
   String? acceptedTime;
@@ -24,6 +25,7 @@ class OrderModel {
       {this.id,
       this.username,
       this.phone,
+      this.price,
       this.start,
       this.destination,
       this.distance,
@@ -46,6 +48,7 @@ class OrderModel {
     id = json['id'];
     username = json['username'];
     phone = json['phone'];
+    price = double.tryParse(json['price'].toString());
     start = json['start'];
     destination = json['destination'];
     distance = json['distance'];
